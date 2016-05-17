@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">Data Collection App v9.2</string>
+
+    <string name="categories">Select Category</string>
+    <string-array name="Options">
+        <item>Delivery Point</item>
+        <item>Resting Place</item>
+        <item>FoodJoint</item>
+        <item>Tea Juice Snack Stall</item>
+        <item>Lodge</item>
+        <item>Bar</item>
+        <item>Tourist Attractions</item>
+        <item>ATM</item>
+        <item>Pharmacy</item>
+        <item>Hospital or Clinic</item>
+        <item>Fuel</item>
+        <item>Car Service</item>
+        <item>Puncture</item>
+        <item>Mechanic</item>
+        <item>Electric</item>
+        <item>Tyres Rebutton</item>
+        <item>Used Tyres</item>
+        <item>Toll</item>
+        <item>State Permit</item>
+        <item>Help Line</item>
+        <item>Road Repair</item>
+    </string-array>
+</resources>
