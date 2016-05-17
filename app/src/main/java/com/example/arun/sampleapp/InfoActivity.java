@@ -4,10 +4,8 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.TimePickerDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.location.Geocoder;
 import android.location.Location;
@@ -35,6 +33,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
+import net.sqlcipher.database.SQLiteDatabase;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -46,6 +46,8 @@ import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+
+//import android.database.sqlite.SQLiteDatabase;
 
 /**
  * Created by Arun on 4/25/2016.
@@ -97,7 +99,14 @@ public class InfoActivity extends Activity implements GoogleApiClient.Connection
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info);
 
-        mSQLiteDataBase=openOrCreateDatabase("CollectedData", Context.MODE_PRIVATE, null);
+        SQLiteDatabase.loadLibs(this);
+        File databaseFile = getDatabasePath("CollectedData.db");
+        databaseFile.mkdirs();
+        databaseFile.delete();
+        mSQLiteDataBase =                                   // line 27
+                SQLiteDatabase.openOrCreateDatabase(databaseFile,"pass123",
+                        null);
+        //mSQLiteDataBase=openOrCreateDatabase("CollectedData", Context.MODE_PRIVATE, null);
 
         mSQLiteDataBase.execSQL("CREATE TABLE IF NOT EXISTS CategoryType(CategotyType_Seq INTEGER Primary Key AUTOINCREMENT,CategoryType_Id VARCHAR Not Null," +
                 "CategoryType_Name VARCHAR Not Null);");
@@ -1526,7 +1535,7 @@ public class InfoActivity extends Activity implements GoogleApiClient.Connection
 
         if (sd.canWrite()) {
             //String currentDBPath = getBaseContext().getDatabasePath(DB_PATH).toString();
-            String currentDBPath = getApplicationContext().getDatabasePath("CollectedData").toString();
+            String currentDBPath = getApplicationContext().getDatabasePath("CollectedData.db").toString();
             String backupDBPath = "backupdata.db";
             File currentDB = new File(currentDBPath);
             File backupDB = new File(sd, backupDBPath);
