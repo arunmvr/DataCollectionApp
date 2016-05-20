@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Data Collection App v9.2</string>
+    <string name="app_name">Data Collection App v9.3</string>
 
     <string name="categories">Select Category</string>
     <string-array name="Options">

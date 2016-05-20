@@ -98,30 +98,7 @@ public class InfoActivity extends Activity implements GoogleApiClient.Connection
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info);
-
-        SQLiteDatabase.loadLibs(this);
-        File databaseFile = getDatabasePath("CollectedData.db");
-        databaseFile.mkdirs();
-        databaseFile.delete();
-        mSQLiteDataBase =                                   // line 27
-                SQLiteDatabase.openOrCreateDatabase(databaseFile,"pass123",
-                        null);
-        //mSQLiteDataBase=openOrCreateDatabase("CollectedData", Context.MODE_PRIVATE, null);
-
-        mSQLiteDataBase.execSQL("CREATE TABLE IF NOT EXISTS CategoryType(CategotyType_Seq INTEGER Primary Key AUTOINCREMENT,CategoryType_Id VARCHAR Not Null," +
-                "CategoryType_Name VARCHAR Not Null);");
-
-        mSQLiteDataBase.execSQL("CREATE TABLE IF NOT EXISTS CategoryDetails(Category_Id Integer Primary Key AUTOINCREMENT,CategoryType_Id VARCHAR Not Null," +
-                "Category_Date varchar,Categoty_Time varchar,Category_Location varchar, Categoty_Speed varchar, Categoty_Altitude varchar, Categoty_Bearing varchar," +
-                "Categoty_Accuracy varchar, Categoty_Provider varchar, Category_Address varchar, Categoty_Name varchar, Categoty_Contact_Number varchar, Categoty_24X7 boolean," +
-                "Categoty_Timings varchar, Categoty_Place varchar, Categoty_Charges boolean, Categoty_Dept boolean, Categoty_Identity_locs boolean, Categoty_Lease boolean, Categoty_Unique_Place boolean," +
-                "Categoty_Games boolean, Categoty_RestRoom boolean, Categoty_CarParking boolean, Categoty_MajorTemple boolean, Categoty_ParkBoating boolean, Categoty_ThemePark boolean," +
-                "Categoty_UnderBridge boolean, Categoty_cctv boolean, Categoty_FirstAid boolean, Categoty_AirCheck boolean, Categoty_WashRoom boolean,Category_RestArea boolean," +
-                "Category_CreditCard boolean, Category_Security boolean, Category_Village boolean, Category_ShopsNearby boolean, Category_FoodJoint boolean,Categoty_Atm boolean," +
-                "Category_DrinkingWater boolean, Category_AutoLpg boolean, Category_CarWash boolean, Category_DP boolean, Category_TeaShop boolean, Category_JuiceShop boolean," +
-                "Category_Tender_Coconut boolean, Category_Restaurant boolean, Category_Ac boolean, Category_NonVeg boolean, Category_HotBeverages boolean, Category_CoolDrinks boolean," +
-                "Category_FreshJuice boolean, Category_Sweets boolean, Category_Bakery boolean, Category_Food boolean, Category_Tv boolean,Category_TeaMaker boolean," +
-                "Category_Locker boolean, Category_Bar boolean, Category_Pool boolean, Category_Lift boolean);");
+        InitializeSql();
 
         mResultReceiver = new AddressResultReceiver(new Handler());
 
@@ -1357,20 +1334,6 @@ public class InfoActivity extends Activity implements GoogleApiClient.Connection
                 +","+mCharges.getText().toString().replace(",","\t")+","+mRestRoom.isChecked()+","+mRestaurant.isChecked()+","+mTeaShop.isChecked()
                 +","+mJuiceShop.isChecked() +"," +mCocunut.isChecked()+","+mDP.isChecked();
 
-
-
-        /*mSQLiteDataBase.execSQL("CREATE TABLE IF NOT EXISTS CategoryDetails(Category_Id Integer Primary Key AUTOINCREMENT,CategoryType_Id VARCHAR Not Null," +
-                "Category_Date varchar,Categoty_Time varchar,Category_Location varchar, Categoty_Speed varchar, Categoty_Altitude varchar, Categoty_Bearing varchar," +
-                "Categoty_Accuracy varchar, Categoty_Provider varchar, Category_Address varchar, Categoty_Name varchar, Categoty_Contact_Number varchar, Categoty_24X7 boolean," +
-                "Categoty_Timings varchar, Categoty_Place varchar, Categoty_Charges boolean, Categoty_Dept boolean, Categoty_Identity_locs boolean, Categoty_Lease boolean, Categoty_Unique_Place boolean," +
-                "Categoty_Games boolean, Categoty_RestRoom boolean, Categoty_CarParking boolean, Categoty_MajorTemple boolean, Categoty_ParkBoating boolean, Categoty_ThemePark boolean," +
-                "Categoty_UnderBridge boolean, Categoty_cctv boolean, Categoty_FirstAid boolean, Categoty_AirCheck boolean, Categoty_WashRoom boolean,Category_RestArea boolean," +
-                "Category_CreditCard boolean, Category_Security boolean, Category_Village boolean, Category_ShopsNearby boolean, Category_FoodJoint boolean,Categoty_Atm boolean," +
-                "Category_DrinkingWater boolean, Category_AutoLpg boolean, Category_CarWash boolean, Category_DP boolean, Category_TeaShop boolean, Category_JuiceShop boolean," +
-                "Category_Tender_Coconut boolean, Category_Restaurant boolean, Category_Ac boolean, Category_NonVeg boolean, Category_HotBeverages boolean, Category_CoolDrinks boolean," +
-                "Category_FreshJuice boolean, Category_Sweets boolean, Category_Bakery boolean, Category_Food boolean, Category_Tv boolean,Category_TeaMaker boolean," +
-                "Category_Locker boolean, Category_Bar boolean, Category_Pool boolean, Category_Lift boolean);");*/
-
         mSQLiteDataBase.execSQL("Insert into CategoryDetails (Category_Id,CategoryType_Id,Category_Date,Categoty_Time,Category_Location,Categoty_Speed,Categoty_Altitude," +
                 "Categoty_Bearing,Categoty_Accuracy,Categoty_Provider,Category_Address,Categoty_Place,Categoty_Charges,Categoty_RestRoom,Category_Restaurant,"+
                 "Category_TeaShop,Category_JuiceShop,Category_Tender_Coconut,Category_DP)"+
@@ -1463,56 +1426,7 @@ public class InfoActivity extends Activity implements GoogleApiClient.Connection
         //CategotyType_Seq
         mSQLiteDataBase.beginTransaction();
 
-        mSQLiteDataBase.execSQL("CREATE TABLE IF NOT EXISTS CategoryType(CategotyType_Seq INTEGER Primary Key AUTOINCREMENT,CategoryType_Id VARCHAR Not Null," +
-                "CategoryType_Name VARCHAR Not Null);");
-
-        mSQLiteDataBase.execSQL("CREATE TABLE IF NOT EXISTS CategoryDetails(Category_Id Integer Primary Key AUTOINCREMENT,CategoryType_Id VARCHAR Not Null," +
-                "Category_Date varchar,Categoty_Time varchar,Category_Location varchar, Categoty_Speed varchar, Categoty_Altitude varchar, Categoty_Bearing varchar," +
-                "Categoty_Accuracy varchar, Categoty_Provider varchar, Category_Address varchar, Categoty_Name varchar, Categoty_Contact_Number varchar, Categoty_24X7 boolean," +
-                "Categoty_Timings varchar, Categoty_Place varchar, Categoty_Charges boolean, Categoty_Dept boolean, Categoty_Identity_locs boolean, Categoty_Lease boolean, Categoty_Unique_Place boolean," +
-                "Categoty_Games boolean, Categoty_RestRoom boolean, Categoty_CarParking boolean, Categoty_MajorTemple boolean, Categoty_ParkBoating boolean, Categoty_ThemePark boolean," +
-                "Categoty_UnderBridge boolean, Categoty_cctv boolean, Categoty_FirstAid boolean, Categoty_AirCheck boolean, Categoty_WashRoom boolean," +
-                "Category_CreditCard boolean, Category_Security boolean, Category_Village boolean, Category_ShopsNearby boolean, Category_FoodJoint boolean," +
-                "Category_DrinkingWater boolean, Category_AutoLpg boolean, Category_CarWash boolean, Category_DP boolean, Category_TeaShop boolean, Category_JuiceShop boolean," +
-                "Category_Tender_Coconut boolean, Category_Restaurant boolean, Category_Ac boolean, Category_NonVeg boolean, Category_HotBeverages boolean, Category_CoolDrinks boolean," +
-                "Category_FreshJuice boolean, Category_Sweets boolean, Category_Bakery boolean, Category_Food boolean, Category_Tv boolean,Category_TeaMaker boolean," +
-                "Category_Locker boolean, Category_Bar boolean, Category_Pool boolean, Category_Lift boolean);");
-
         mSQLiteDataBase.execSQL("INSERT INTO CategoryType VALUES(null,'"+mCategoryType+"','"+mDisplayCategory.getText().toString()+"');");
-
-        /*try {
-            mSQLiteDataBase.execSQL("INSERT INTO CategoryDetails VALUES(null,'"+mCategoryType+"','"+mDisplayCategory.getText().toString()+"','"+mDate.getText().toString()+"'," +
-                    "'"+mTime.getText().toString()+"','"+mCurrentLocation.getText().toString()+"','"+mSpeed.getText().toString()+"','"+mAltitude.getText().toString()+"'," +
-                    "'"+mBearing.getText().toString()+"','"+mAccuracy.getText().toString()+"','"+mProvider.getText().toString()+"','"+mLocationAddress.getText().toString()+"'," +
-                    "'"+mName.getText().toString()+"','"+mMobileNumber.getText().toString()+"','"+m24hrs.isChecked()+"','"+mFrom.getText().toString()+"-"+mTo.getText().toString()+"'," +
-                    "'"+mPlace.getText().toString()+"','"+mCharges.getText().toString()+"','"+mDept.getText().toString()+"','"+mIdentifyLocs.isChecked()+"'," +
-                    "'"+mLease.isChecked()+"','"+mUniquePlace.isChecked()+"','"+mGames.isChecked()+"','"+mRestRoom.isChecked()+"','"+mCarParking.isChecked()+"'," +
-                    "'"+mMajorTemple.isChecked()+"','"+mParkBoating.isChecked()+"','"+mThemePark.isChecked()+"','"+mUnderBridge.isChecked()+"','"+mCctv.isChecked()+"'," +
-                    "'"+mFirstAid.isChecked()+"','"+mAirCheck.isChecked()+"','"+mWashroom.isChecked()+"','"+mCreditCard.isChecked()+"','"+mSecurity.isChecked()+"'," +
-                    "'"+mVillage.isChecked()+"','"+mShopsNearby.isChecked()+"','"+mFoodJoint.isChecked()+"','"+mDrinkingWater.isChecked()+"','"+mAutoLpg.isChecked()+"'," +
-                    "'"+mCarWash.isChecked()+"','"+mDP.isChecked()+"','"+mTeaShop.isChecked()+"','"+mJuiceShop.isChecked()+"','"+mCocunut.isChecked()+"'," +
-                    "'"+mRestaurant.isChecked()+"','"+mAc.isChecked()+"','"+mNonveg.isChecked()+"','"+mHotBeverages.isChecked()+"','"+mCoolDrinks.isChecked()+"'," +
-                    "'"+mFreshJuice.isChecked()+"','"+mSweets.isChecked()+"','"+mBakery.isChecked()+"','"+mFood.isChecked()+"','"+mTV.isChecked()+"','"+mTeaMaker.isChecked()+"'," +
-                    "'"+mLocker.isChecked()+"','"+mBar.isChecked()+"','"+mPool.isChecked()+"','"+mLift.isChecked()+"');");
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }*/
-
-        /*mSQLiteDataBase.execSQL("INSERT INTO CategoryDetails VALUES(null,'"+mCategoryType+"','"+mDisplayCategory.getText().toString()+"','"+mDate.getText().toString()+"'," +
-                "'"+mTime.getText().toString()+"','"+mCurrentLocation.getText().toString()+"','"+mSpeed.getText().toString()+"','"+mAltitude.getText().toString()+"'," +
-                "'"+mBearing.getText().toString()+"','"+mAccuracy.getText().toString()+"','"+mProvider.getText().toString()+"','"+mLocationAddress.getText().toString()+"'," +
-                "'"+mName.getText().toString()+"','"+mNumber.getText().toString()+"','"+m24hrs.isChecked()+"','"+mFrom.getText().toString()+"-"+mTo.getText().toString()+"'," +
-                "'"+mPlace.getText().toString()+"','"+mCharges.getText().toString()+"','"+mDept.getText().toString()+"','"+mIdentifyLocs.isChecked()+"'," +
-                "'"+mLease.isChecked()+"','"+mUniquePlace.isChecked()+"','"+mGames.isChecked()+"','"+mRestRoom.isChecked()+"','"+mCarParking.isChecked()+"'," +
-                "'"+mMajorTemple.isChecked()+"','"+mParkBoating.isChecked()+"','"+mThemePark.isChecked()+"','"+mUnderBridge.isChecked()+"','"+mCctv.isChecked()+"'," +
-                "'"+mFirstAid.isChecked()+"','"+mAirCheck.isChecked()+"','"+mWashroom.isChecked()+"','"+mCreditCard.isChecked()+"','"+mSecurity.isChecked()+"'," +
-                "'"+mVillage.isChecked()+"','"+mShopsNearby.isChecked()+"','"+mFoodJoint.isChecked()+"','"+mDrinkingWater.isChecked()+"','"+mAutoLpg.isChecked()+"'," +
-                "'"+mCarWash.isChecked()+"','"+mDP.isChecked()+"','"+mTeaShop.isChecked()+"','"+mJuiceShop.isChecked()+"','"+mCocunut.isChecked()+"'," +
-                "'"+mRestaurant.isChecked()+"','"+mAc.isChecked()+"','"+mNonveg.isChecked()+"','"+mHotBeverages.isChecked()+"','"+mCoolDrinks.isChecked()+"'," +
-                "'"+mFreshJuice.isChecked()+"','"+mSweets.isChecked()+"','"+mBakery.isChecked()+"','"+mFood.isChecked()+"','"+mTV.isChecked()+"','"+mTeaMaker.isChecked()+"'," +
-                "'"+mLocker.isChecked()+"','"+mBar.isChecked()+"','"+mPool.isChecked()+"','"+mLift.isChecked()+"');");*/
-
-        //mSQLiteDataBase.execSQL("INSERT INTO CategoryType(CategoryType_Id, CategoryType_Name ) VALUES ('"+mCategoryType+"','"+mDisplayCategory.getText().toString()+"' );");
         mSQLiteDataBase.setTransactionSuccessful();
         mSQLiteDataBase.endTransaction();
         try {
@@ -1535,7 +1449,7 @@ public class InfoActivity extends Activity implements GoogleApiClient.Connection
 
         if (sd.canWrite()) {
             //String currentDBPath = getBaseContext().getDatabasePath(DB_PATH).toString();
-            String currentDBPath = getApplicationContext().getDatabasePath("CollectedData.db").toString();
+            String currentDBPath = getApplicationContext().getDatabasePath("CollectedData").toString();
             String backupDBPath = "backupdata.db";
             File currentDB = new File(currentDBPath);
             File backupDB = new File(sd, backupDBPath);
@@ -1551,6 +1465,32 @@ public class InfoActivity extends Activity implements GoogleApiClient.Connection
                     "DB copied to external",
                     Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void InitializeSql(){
+
+        SQLiteDatabase.loadLibs(this);
+        File databaseFile = getDatabasePath("CollectedData.db");
+        databaseFile.mkdirs();
+        databaseFile.delete();
+        mSQLiteDataBase = SQLiteDatabase.openOrCreateDatabase(databaseFile,"pass123",null);
+        //mSQLiteDataBase=openOrCreateDatabase("CollectedData", Context.MODE_PRIVATE, null);
+
+        mSQLiteDataBase.execSQL("CREATE TABLE IF NOT EXISTS CategoryType(CategotyType_Seq INTEGER Primary Key AUTOINCREMENT,CategoryType_Id VARCHAR Not Null," +
+                "CategoryType_Name VARCHAR Not Null);");
+
+        mSQLiteDataBase.execSQL("CREATE TABLE IF NOT EXISTS CategoryDetails(Category_Id Integer Primary Key AUTOINCREMENT,CategoryType_Id VARCHAR Not Null," +
+                "Category_Date varchar,Categoty_Time varchar,Category_Location varchar, Categoty_Speed varchar, Categoty_Altitude varchar, Categoty_Bearing varchar," +
+                "Categoty_Accuracy varchar, Categoty_Provider varchar, Category_Address varchar, Categoty_Name varchar, Categoty_Contact_Number varchar, Categoty_24X7 boolean," +
+                "Categoty_Timings varchar, Categoty_Place varchar, Categoty_Charges varchar, Categoty_Dept varchar, Categoty_Identity_locs boolean, Categoty_Lease boolean, Categoty_Unique_Place boolean," +
+                "Categoty_Games boolean, Categoty_RestRoom boolean, Categoty_CarParking boolean, Categoty_MajorTemple boolean, Categoty_ParkBoating boolean, Categoty_ThemePark boolean," +
+                "Categoty_UnderBridge boolean, Categoty_cctv boolean, Categoty_FirstAid boolean, Categoty_AirCheck boolean, Categoty_WashRoom boolean,Category_RestArea boolean," +
+                "Category_CreditCard boolean, Category_Security boolean, Category_Village boolean, Category_ShopsNearby boolean, Category_FoodJoint boolean,Categoty_Atm boolean," +
+                "Category_DrinkingWater boolean, Category_AutoLpg boolean, Category_CarWash boolean, Category_DP boolean, Category_TeaShop boolean, Category_JuiceShop boolean," +
+                "Category_Tender_Coconut boolean, Category_Restaurant boolean, Category_Ac boolean, Category_NonVeg boolean, Category_HotBeverages boolean, Category_CoolDrinks boolean," +
+                "Category_FreshJuice boolean, Category_Sweets boolean, Category_Bakery boolean, Category_Food boolean, Category_Tv boolean,Category_TeaMaker boolean," +
+                "Category_Locker boolean, Category_Bar boolean, Category_Pool boolean, Category_Lift boolean);");
+
     }
 
 }
